@@ -1,6 +1,9 @@
 package bd;
 
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+import logica.Cliente;
 
 
 import java.sql.DriverManager;
@@ -24,8 +27,11 @@ public class Database {
     static final String DB = "finapps";
 
     public Database() {
-
     }
+
+
+    private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
+
 
     public String connect() {
         try {
@@ -51,9 +57,69 @@ public class Database {
         return "00000";
     }
 
-    public int get (){
-        return 1;
+    public String insertarCliente(Cliente c) {
+        try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_CLIENTE, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, String.valueOf(c.getCode()));
+            stmt.setString(2, c.getName());
+            stmt.setString(3, c.getSurname());
+            stmt.setString(4, String.valueOf(c.getBirthDate()));
+            stmt.setString(5, String.valueOf(c.getPostalCode()));
+
+            stmt.executeUpdate();
+            con.commit();
+            return "00000";
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException e2) {
+                System.out.print("insercion cliente");
+            }
+            return e.getSQLState();
+        }
     }
+
+
+    //
+    public String insertarVenta(Cliente c) {
+        return "";
+    }
+
+    //
+    public String insertarDevolucion(Cliente c) {
+        return "";
+    }
+
+    //
+    public String insertarCategoria(Cliente c) {
+        return "";
+    }
+
+    //
+    public String insertarEmpleado(Cliente c) {
+        return "";
+    }
+
+
+    public String insertar_venta_Articulos(Cliente c) {
+        return "";
+    }
+
+    public String modificarArticulo(Cliente c) {
+        return "";
+    }
+
+    public String modificarCliente(Cliente c) {
+        return "";
+    }
+
+    public String modificarCategoria(Cliente c) {
+        return "";
+    }
+
+
+
+
+
 
 
 }
