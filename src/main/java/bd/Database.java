@@ -4,7 +4,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import logica.Cliente;
-
+import logica.*;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -82,7 +82,6 @@ public class Database {
             return false;
         }
     }
-
     //
     public Boolean insertarArticulo(Article a) {
         try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_ARTICLE, Statement.RETURN_GENERATED_KEYS)) {
