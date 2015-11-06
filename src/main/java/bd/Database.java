@@ -151,7 +151,6 @@ public class Database {
        } catch (SQLException e) {
            return false;
        }
-
    }
 
 }
