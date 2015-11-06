@@ -108,7 +108,7 @@ public class Database {
         return "";
     }
 
-    public String modificarCliente(Cliente c) {return "";
+    public String modificarCliente(Cliente c) {
         return "";
     }
 
