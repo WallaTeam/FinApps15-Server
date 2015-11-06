@@ -51,7 +51,7 @@ public class Sale {
         this.client = client;
     }
 
-    public void setdate (int date){
+    public void setdate (Date date){
         this.date = date;
     }
 
