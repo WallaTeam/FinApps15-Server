@@ -59,7 +59,7 @@ public class Database {
         return "00000";
     }
 
-    public String insertarCliente(Cliente c) {
+    public Boolean insertarCliente(Cliente c) {
         try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_CLIENTE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, String.valueOf(c.getCode()));
             stmt.setString(2, c.getName());
@@ -72,19 +72,20 @@ public class Database {
 
             stmt.executeUpdate();
             con.commit();
-            return "00000";
+            return true;
         } catch (SQLException e) {
             try {
                 con.rollback();
+                return false;
             } catch (SQLException e2) {
-                System.out.print("insercion cliente");
+
             }
-            return e.getSQLState();
+            return false;
         }
     }
 
     //
-    public String insertarArticulo(Article a) {
+    public Boolean insertarArticulo(Article a) {
         try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_ARTICLE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, String.valueOf(a.getCode()));
             stmt.setString(2, a.getName());
@@ -97,7 +98,7 @@ public class Database {
 
             stmt.executeUpdate();
             con.commit();
-            return "00000";
+            return false;
         } catch (SQLException e) {
             try {
                 System.out.print(e.getMessage());
@@ -105,7 +106,7 @@ public class Database {
             } catch (SQLException e2) {
                 System.out.print("insercion cliente");
             }
-            return e.getSQLState();
+            return false;
         }
     }
 
