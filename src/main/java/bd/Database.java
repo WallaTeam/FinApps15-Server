@@ -3,8 +3,7 @@ package bd;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
-import logica.Cliente;
-
+import logica.*;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,9 +20,9 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "wallapet";
-    static final String IP = "192.168.56.101";
+    static final String USER = "luis";
+    static final String PASS = "platano";
+    static final String IP = "localhost";
     static final String DB = "finapps";
 
     public Database() {
@@ -89,37 +88,44 @@ public class Database {
         return "";
     }
 
-    //
-    public String insertarCategoria(Cliente c) {
-        return "";
+    public boolean modificarCliente(int dni, String name, String surname, String date, int postalCode) {
+        Statement stmt = null;
+        try {
+            stmt = (Statement)con.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // (LOW PRIORITY) Actualizar cuando nadie este leyendo
+        String sql_1 = "UPDATE LOW PRIORITY " + "Clients"
+                + " SET dni =" + dni
+                + ", name =" + name + ", surname =" + surname
+                + ", date =" + date + ", postalCode=" + postalCode
+                + "WHERE dni=\""
+                + dni
+                + "\"";
+
+        try {
+            stmt.executeQuery(sql_1);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
-    //
-    public String insertarEmpleado(Cliente c) {
-        return "";
-    }
+   /* public boolean borrarCliente(Cliente c){
+        Statement stmt = con.createStatement();
+        sql_1 = "DELETE FROM Clients " + " WHERE dni = '" + nombre + "'"
+                + " and marca = '" + marca + "'"
+                + " and codigo_restaurante = '"
+                + codigo + "'";
+        return false;
+        }
 
+    public ArrayList <Article> articulos()
 
-    public String insertar_venta_Articulos(Cliente c) {
-        return "";
-    }
+    Statement stmt = con.createStatement();
 
-    public String modificarArticulo(Cliente c) {
-        return "";
-    }
-
-    public String modificarCliente(Cliente c) {
-        return "";
-    }
-
-    public String modificarCategoria(Cliente c) {
-        return "";
-    }
-
-
-
-
-
-
+        }*/
 
 }
