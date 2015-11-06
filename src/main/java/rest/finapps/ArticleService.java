@@ -23,6 +23,7 @@ public class ArticleService {
 	 */
 
 	Database database = new Database();
+	LedMatrix led = new LedMatrix();
 
 	/**
 	 * A GET /contacts request should return the address book in JSON.
@@ -43,8 +44,12 @@ public class ArticleService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addArticle(@Context UriInfo info, Article article) {
-		database.insertarArticulo(article);
-		return Response.status(Status.CREATED).build();
+		boolean nuevo = database.insertarArticulo(article);
+		if (nuevo == true){
+			return Response.status(Status.CREATED).build();
+		} else {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	/**
@@ -55,7 +60,26 @@ public class ArticleService {
 	@GET
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPerson(@PathParam("id") int id) {
+	public Response getArticle(@PathParam("id") int id) {
+		Article nuevo = database.obtenerArticulo(id);
+		if (nuevo==null){
+			led.doFail();
+			return Response.status(Status.NOT_FOUND).build();
+		} else {
+			led.doOk();
+			return Response.ok(nuevo).build();
+		}
+	}
+
+	/**
+	 * A GET /contacts/person/{id} request should return a entry from the address book
+	 * @param id the unique identifier of a person
+	 * @return a JSON representation of the new entry or 404
+	 */
+	@GET
+	@Path("/product/detail/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getArticle(@PathParam("id") int id) {
 		Article nuevo = database.obtenerArticulo(id);
 		if (nuevo==null){
 			return Response.status(Status.NOT_FOUND).build();
@@ -74,7 +98,7 @@ public class ArticleService {
 	@PUT
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePerson(@Context UriInfo info,
+	public Response updateArticle(@Context UriInfo info,
 								 @PathParam("id") int id, Article article) {
 		boolean nuevo = database.modificarArticulo(article);
 		if (nuevo == true){
@@ -92,7 +116,7 @@ public class ArticleService {
 	@DELETE
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePerson(@PathParam("id") int id) {
+	public Response updateArticle(@PathParam("id") int id) {
 		boolean nuevo = database.eliminarArticulo(id);
 		if(nuevo == true){
 			return Response.status(Status.OK).build();

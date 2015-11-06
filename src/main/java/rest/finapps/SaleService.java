@@ -42,7 +42,7 @@ public class SaleService {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addClient(@Context UriInfo info, Sale sale) {
+    public Response addSale(@Context UriInfo info, Sale sale) {
         boolean nuevo = database.insertarVenta(sale);
         if (nuevo == true){
             return Response.status(Status.CREATED).build();
@@ -59,7 +59,7 @@ public class SaleService {
     @GET
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("id") int id) {
+    public Response getSale(@PathParam("id") int id) {
         Sale nuevo = database.obtenerVenta(id);
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
@@ -78,7 +78,7 @@ public class SaleService {
     @PUT
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePerson(@Context UriInfo info,
+    public Response updateSale(@Context UriInfo info,
                                  @PathParam("id") int id, Sale sale) {
         boolean nuevo = database.modificarVenta(sale);
         if (nuevo == true){
@@ -96,7 +96,7 @@ public class SaleService {
     @DELETE
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePerson(@PathParam("id") int id) {
+    public Response updateSale(@PathParam("id") int id) {
         boolean nuevo = database.eliminarVenta(id);
         if(nuevo == true){
             return Response.status(Status.OK).build();
