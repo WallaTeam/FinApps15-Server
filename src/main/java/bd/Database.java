@@ -113,19 +113,15 @@ public class Database {
         }
     }
 
-   /* public boolean borrarCliente(Cliente c){
-        Statement stmt = con.createStatement();
-        sql_1 = "DELETE FROM Clients " + " WHERE dni = '" + nombre + "'"
-                + " and marca = '" + marca + "'"
-                + " and codigo_restaurante = '"
-                + codigo + "'";
-        return false;
-        }
+   public boolean borrarCliente(Cliente c){
+       try {
+           Statement stmt = (Statement) con.createStatement();
+       String sql_1 = "DELETE FROM Clients " + " WHERE dni = '" + c.getCode() + "'";
+           return true;
+       } catch (SQLException e) {
+           return false;
+       }
 
-    public ArrayList <Article> articulos()
-
-    Statement stmt = con.createStatement();
-
-        }*/
+   }
 
 }
