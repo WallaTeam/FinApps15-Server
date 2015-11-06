@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Article {
 
-    private int code;
+    private String code;
     private String name;
     private String category;
     private double prize;
@@ -16,7 +16,7 @@ public class Article {
     private String description;
     private int stock;
 
-    public Article (int code, String name, String category, double prize, int vat, String description,
+    public Article (String code, String name, String category, double prize, int vat, String description,
     int stock){
         this.code = code;
         this.name = name;
@@ -27,7 +27,7 @@ public class Article {
         this.stock = stock;
     }
 
-    public int getCode (){
+    public String getCode (){
         return code;
     }
 
@@ -55,7 +55,7 @@ public class Article {
         return stock;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

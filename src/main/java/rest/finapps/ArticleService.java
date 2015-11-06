@@ -1,32 +1,28 @@
 package rest.finapps;
 
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import bd.Database;
+import logica.Article;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 
 /**
  * Servicio que manipula personas en una lista de contactos.
  *
  */
-@Path("/contacts")
-public class AddressBookService {
+@Path("/articles")
+public class ArticleService {
 
 	/**
 	 * The (shared) address book object.
 	 */
-	@Inject
-	AddressBook addressBook;
+
+	Database database = new Database();
 
 	/**
 	 * A GET /contacts request should return the address book in JSON.
@@ -34,8 +30,8 @@ public class AddressBookService {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public AddressBook getAddressBook() {
-		return addressBook;
+	public ArrayList<Article> getArticles() {
+		return database.articulos();
 	}
 
 	/**
@@ -46,11 +42,9 @@ public class AddressBookService {
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addPerson(@Context UriInfo info, Person person) {
-		addressBook.getPersonList().add(person);
-		person.setId(addressBook.nextId());
-		person.setHref(info.getAbsolutePathBuilder().path("person/{id}").build(person.getId()));
-		return Response.created(person.getHref()).entity(person).build();
+	public Response addArticle(@Context UriInfo info, Article article) {
+		database.insertarArticulo(article);
+		return Response.status(Status.CREATED).build();
 	}
 
 	/**
@@ -59,15 +53,15 @@ public class AddressBookService {
 	 * @return a JSON representation of the new entry or 404
 	 */
 	@GET
-	@Path("/person/{id}")
+	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPerson(@PathParam("id") int id) {
-		for (Person p : addressBook.getPersonList()) {
-			if (p.getId() == id) {
-				return Response.ok(p).build();
-			}
+		Article nuevo = database.obtenerArticulo(id);
+		if (nuevo==null){
+			return Response.status(Status.NOT_FOUND).build();
+		} else {
+			return Response.ok(nuevo).build();
 		}
-		return Response.status(Status.NOT_FOUND).build();
 	}
 
 	/**
@@ -78,19 +72,16 @@ public class AddressBookService {
 	 * @return a JSON representation of the new updated entry or 400 if the id is not a key
 	 */
 	@PUT
-	@Path("/person/{id}")
+	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updatePerson(@Context UriInfo info,
-								 @PathParam("id") int id, Person person) {
-		for (int i = 0; i < addressBook.getPersonList().size(); i++) {
-			if (addressBook.getPersonList().get(i).getId() == id) {
-				person.setId(id);
-				person.setHref(info.getAbsolutePath());
-				addressBook.getPersonList().set(i, person);
-				return Response.ok(person).build();
-			}
+								 @PathParam("id") int id, Article article) {
+		boolean nuevo = database.modificarArticulo(article);
+		if (nuevo == true){
+			return Response.ok(Status.ACCEPTED).build();
+		} else {
+			return Response.status(Status.BAD_REQUEST).build();
 		}
-		return Response.status(Status.BAD_REQUEST).build();
 	}
 
 	/**
@@ -99,16 +90,15 @@ public class AddressBookService {
 	 * @return 204 if the request is successful, 404 if the id is not a key
 	 */
 	@DELETE
-	@Path("/person/{id}")
+	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updatePerson(@PathParam("id") int id) {
-		for (int i = 0; i < addressBook.getPersonList().size(); i++) {
-			if (addressBook.getPersonList().get(i).getId() == id) {
-				addressBook.getPersonList().remove(i);
-				return Response.noContent().build();
-			}
+		boolean nuevo = database.eliminarArticulo(id);
+		if(nuevo == true){
+			return Response.status(Status.OK).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).build();
 		}
-		return Response.status(Status.NOT_FOUND).build();
 	}
 
 }

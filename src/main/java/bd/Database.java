@@ -3,7 +3,8 @@ package bd;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
-import logica.*;
+import logica.Cliente;
+
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,9 +21,9 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
     //  Database credentials
-    static final String USER = "luis";
-    static final String PASS = "platano";
-    static final String IP = "localhost";
+    static final String USER = "root";
+    static final String PASS = "wallapet";
+    static final String IP = "192.168.56.101";
     static final String DB = "finapps";
 
     public Database() {
@@ -30,6 +31,7 @@ public class Database {
 
 
     private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
+    private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
 
 
     public String connect() {
@@ -56,27 +58,56 @@ public class Database {
         return "00000";
     }
 
-    public String insertarCliente(Cliente c) {
+    public Boolean insertarCliente(Cliente c) {
         try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_CLIENTE, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, String.valueOf(c.getCode()));
             stmt.setString(2, c.getName());
             stmt.setString(3, c.getSurname());
-            stmt.setString(4, String.valueOf(c.getBirthDate()));
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String currentTime;
+            currentTime = sdf.format(c.getBirthDate());
+            stmt.setString(4, String.valueOf(currentTime));
             stmt.setString(5, String.valueOf(c.getPostalCode()));
 
             stmt.executeUpdate();
             con.commit();
-            return "00000";
+            return true;
         } catch (SQLException e) {
             try {
+                con.rollback();
+                return false;
+            } catch (SQLException e2) {
+
+            }
+            return false;
+        }
+    }
+
+    //
+    public Boolean insertarArticulo(Article a) {
+        try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_ARTICLE, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, String.valueOf(a.getCode()));
+            stmt.setString(2, a.getName());
+            stmt.setString(3, String.valueOf(a.getVat()));
+            stmt.setString(4, String.valueOf(a.getPrize()));
+            stmt.setString(5, String.valueOf(a.getDescription()));
+            stmt.setString(6, String.valueOf(a.getStock()));
+            stmt.setString(7, String.valueOf(a.getCategory()));
+
+
+            stmt.executeUpdate();
+            con.commit();
+            return false;
+        } catch (SQLException e) {
+            try {
+                System.out.print(e.getMessage());
                 con.rollback();
             } catch (SQLException e2) {
                 System.out.print("insercion cliente");
             }
-            return e.getSQLState();
+            return false;
         }
     }
-
 
     //
     public String insertarVenta(Cliente c) {
