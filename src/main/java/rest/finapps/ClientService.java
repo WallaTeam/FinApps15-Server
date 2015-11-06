@@ -37,7 +37,6 @@ public class ClientService {
     /**
      * A POST /contacts request should add a new entry to the address book.
      * @param info the URI information of the request
-     * @param person the posted entity
      * @return a JSON representation of the new entry that should be available at /contacts/person/{id}.
      */
     @POST
@@ -71,7 +70,6 @@ public class ClientService {
     /**
      * A PUT /contacts/person/{id} should update a entry if exists
      * @param info the URI information of the request
-     * @param person the posted entity
      * @param id the unique identifier of a person
      * @return a JSON representation of the new updated entry or 400 if the id is not a key
      */
