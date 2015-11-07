@@ -29,8 +29,8 @@ public class ClientService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Cliente getClientes() {
-        return database.obtenerListadoClientes().get(0);
+    public Response getClientes() {
+        return Response.ok(database.obtenerListadoClientes()).build();
     }
 
     /**
