@@ -1,7 +1,6 @@
 package logica;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by teruyi on 6/11/15.
@@ -27,7 +26,7 @@ public class Sale {
         for (Article at : articleList) {
             double iva = at.getVat()/100;
             iva= iva +1;
-            finalPrice = at.getPrize() * iva;
+            finalPrice += at.getPrize() * iva;
         }
     }
 
