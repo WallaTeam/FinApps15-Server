@@ -81,7 +81,9 @@ public class ClientService {
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateClient(@Context UriInfo info,
-                                 @PathParam("id") int id, Cliente client) {
+                                 @PathParam("id") int id, String cadena) {
+        Gson gson = new Gson();
+        Cliente client = gson.fromJson(cadena,Cliente.class);
         boolean nuevo = database.modificarCliente(client.getCode(),client.getName(),
                 client.getSurname(), client.getBirthDate(),client.getPostalCode());
         if (nuevo == true){

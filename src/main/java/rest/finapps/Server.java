@@ -19,7 +19,6 @@ public class Server {
 	
 	public static void main(String[] args) {
 		LOGGER.setLevel(Level.FINER);
-		AddressBook ab = new AddressBook();
 		
 		//Launch server
 		URI uri = UriBuilder.fromUri("http://192.168.42.1/").port(8080).build();

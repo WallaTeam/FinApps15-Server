@@ -31,8 +31,7 @@ public class SaleService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSales() {
         Gson gson = new Gson();
-        //return Response.ok(gson.toJson(database.obtenerListadoVentas())).build();
-        return Response.status(Status.ACCEPTED).build();
+        return Response.ok(gson.toJson(database.obtenerListadoVentas())).build();
     }
 
     /**
@@ -42,7 +41,9 @@ public class SaleService {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addSale(@Context UriInfo info, Sale sale) {
+    public Response addSale(@Context UriInfo info, String cadena) {
+        Gson gson = new Gson();
+        Sale sale = gson.fromJson(cadena,Sale.class);
         boolean nuevo = database.insertarVenta(sale);
         if (nuevo == true){
             return Response.status(Status.CREATED).build();
@@ -60,8 +61,7 @@ public class SaleService {
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSale(@PathParam("id") int id) {
-        //Sale nuevo = database.obtenerVenta(id);
-        Sale nuevo = null;
+        Sale nuevo = database.obtenerVenta(id);
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
         } else {
@@ -80,14 +80,8 @@ public class SaleService {
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSale(@Context UriInfo info,
-                                 @PathParam("id") int id, Sale sale) {
-        //boolean nuevo = database.modificarVenta(sale);
-        boolean nuevo = true;
-        if (nuevo == true){
-            return Response.ok(Status.ACCEPTED).build();
-        } else {
-            return Response.status(Status.BAD_REQUEST).build();
-        }
+                                 @PathParam("id") int id, String cadena) {
+        return Response.status(Status.BAD_REQUEST).build();
     }
 
     /**
@@ -99,13 +93,7 @@ public class SaleService {
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSale(@PathParam("id") int id) {
-        // boolean nuevo = database.eliminarVenta(id);
-        boolean nuevo = true;
-        if(nuevo == true){
-            return Response.status(Status.OK).build();
-        } else {
-            return Response.status(Status.NOT_FOUND).build();
-        }
+        return Response.status(Status.NOT_FOUND).build();
     }
 
 }

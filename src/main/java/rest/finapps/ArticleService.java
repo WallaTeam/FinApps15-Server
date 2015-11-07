@@ -33,8 +33,7 @@ public class ArticleService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArticles() {
 		Gson gson = new Gson();
-		//return Response.ok(gson.toJson(database.obtenerArticulos())).build();
-		return Response.status(Status.ACCEPTED).build();
+		return Response.ok(gson.toJson(database.obtenerListadoArticulos())).build();
 	}
 
 	/**
@@ -44,7 +43,9 @@ public class ArticleService {
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addArticle(@Context UriInfo info, Article article) {
+	public Response addArticle(@Context UriInfo info, String cadena) {
+		Gson gson = new Gson();
+		Article article = gson.fromJson(cadena,Article.class);
 		boolean nuevo = database.insertarArticulo(article);
 		if (nuevo == true){
 			return Response.status(Status.CREATED).build();
@@ -102,9 +103,10 @@ public class ArticleService {
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@Context UriInfo info,
-								 @PathParam("id") int id, Article article) {
-		//boolean nuevo = database.modificarArticulo(article);
-		boolean nuevo = true;
+								 @PathParam("id") int id, String cadena) {
+		Gson gson = new Gson();
+		Article article = gson.fromJson(cadena,Article.class);
+		boolean nuevo = database.actualizarArticulo(article);
 		if (nuevo == true){
 			return Response.ok(Status.ACCEPTED).build();
 		} else {
@@ -121,13 +123,7 @@ public class ArticleService {
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@PathParam("id") int id) {
-		//boolean nuevo = database.eliminarArticulo(id);
-		boolean nuevo = true;
-		if(nuevo == true){
-			return Response.status(Status.OK).build();
-		} else {
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		return Response.status(Status.NOT_FOUND).build();
 	}
 
 }
