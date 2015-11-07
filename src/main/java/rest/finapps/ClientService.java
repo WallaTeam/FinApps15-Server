@@ -9,7 +9,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-import java.util.List;
 
 /**
  * Servicio que manipula personas en una lista de contactos.
@@ -30,8 +29,8 @@ public class ClientService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Cliente> getClientes() {
-        return database.obtenerListadoClientes();
+    public Cliente getClientes() {
+        return database.obtenerListadoClientes().get(0);
     }
 
     /**
