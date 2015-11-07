@@ -24,8 +24,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "wallamsql";
+    static final String USER = "luis";
+    static final String PASS = "platano";
     static final String IP = "localhost";
     static final String DB = "finapps";
 
@@ -138,10 +138,10 @@ public class Database {
     public boolean insertarVenta(Sale s) {
         try {
             Statement stmt = (Statement) con.createStatement();
-           // stmt.executeUpdate(
-              //      "INSERT INTO Saled (Sale_code,Article_code)"
-                //            + " VALUES ('" + code + "','"
-                 //           + e.getCode() + "')");
+            // stmt.executeUpdate(
+            //      "INSERT INTO Saled (Sale_code,Article_code)"
+            //            + " VALUES ('" + code + "','"
+            //           + e.getCode() + "')");
             stmt.executeUpdate(
                     "INSERT INTO Sale (date,Clients_dni,Workers_dni,cost)"
                             + " VALUES (\"" +  s.getDate() + "\","
