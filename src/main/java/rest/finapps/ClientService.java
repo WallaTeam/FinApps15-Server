@@ -86,9 +86,12 @@ public class ClientService {
         Cliente client = gson.fromJson(cadena,Cliente.class);
         boolean nuevo = database.actualizarCliente(client.getCode(),client.getName(),
                 client.getSurname(), client.getBirthDate(),client.getPostalCode());
+        System.out.println(nuevo);
         if (nuevo){
+            System.out.println("jaja");
             return Response.ok(Status.ACCEPTED).build();
         } else {
+            System.out.println("nuevo");
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
