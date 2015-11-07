@@ -59,7 +59,7 @@ public class ClientService {
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getClient(@PathParam("id") int id) {
-        Cliente nuevo = database.e(id);
+        Cliente nuevo = database.obtenerCliente(id);
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
         } else {
@@ -78,7 +78,8 @@ public class ClientService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateClient(@Context UriInfo info,
                                  @PathParam("id") int id, Cliente client) {
-        boolean nuevo = database.modificarArticulo(client);
+        boolean nuevo = database.modificarCliente(client.getCode(),client.getName(),
+                client.getSurname(), client.getBirthDate(),client.getPostalCode());
         if (nuevo == true){
             return Response.ok(Status.ACCEPTED).build();
         } else {
@@ -95,7 +96,7 @@ public class ClientService {
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateClient(@PathParam("id") int id) {
-        boolean nuevo = database.eliminarCliente(id);
+        boolean nuevo = database.borrarCliente(id);
         if(nuevo == true){
             return Response.status(Status.OK).build();
         } else {

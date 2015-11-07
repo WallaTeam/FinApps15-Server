@@ -170,10 +170,10 @@
             }
         }
 
-       public boolean borrarCliente(Cliente c){
+       public boolean borrarCliente(int c){
            try {
                Statement stmt = (Statement) con.createStatement();
-               String sql = "DELETE FROM Clients " + " WHERE dni = '" + c.getCode() + "'";
+               String sql = "DELETE FROM Clients " + " WHERE dni = '" + c + "'";
                stmt.executeQuery(sql);
                return true;
            } catch (SQLException e) {
