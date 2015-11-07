@@ -8,6 +8,19 @@ public class Worker {
     private int dni;
     private String name;
 
+    public Worker(int dni, String nam) {
+        this.dni = dni;
+        name = nam;
+    }
+
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "dni=" + dni +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public int getDni() {
         return dni;
     }

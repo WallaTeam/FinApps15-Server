@@ -17,15 +17,29 @@ public class Sale {
 
 
 
-    public Sale (int code , int client, String date, ArrayList articleList,
-                 double finalPrice, int worker){
+    public Sale (int code , int client, String date, ArrayList<Article> articleList, int worker){
         this.code = code;
         this.client = client;
         this.date = date;
+        finalPrice = 0;
         this.articleList = articleList;
         this.finalPrice = finalPrice;
         this.worker = worker;
+        for (Article at : articleList) {
+            finalPrice = at.getPrize();
+        }
+    }
 
+    @Override
+    public String toString() {
+        return "Sale{" +
+                "code=" + code +
+                ", client=" + client +
+                ", date='" + date + '\'' +
+                ", articleList=" + articleList +
+                ", finalPrice=" + finalPrice +
+                ", worker=" + worker +
+                '}';
     }
 
     public int getCode (){

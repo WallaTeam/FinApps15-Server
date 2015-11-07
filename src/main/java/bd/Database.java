@@ -24,8 +24,8 @@
         static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
         //  Database credentials
-        static final String USER = "root";
-        static final String PASS = "wallamsql";
+        static final String USER = "luis";
+        static final String PASS = "platano";
         static final String IP = "localhost";
         static final String DB = "finapps";
 
@@ -34,11 +34,11 @@
         }
 
 
-        private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
-        private static final String INSERCION_ARTICLE = "insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
-        private static final String INSERCION_VENTA = "insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
-        //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
-        private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
+    private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
+    private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
+    private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
+    //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
+    private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
 
         public String connect() {
             try {
@@ -69,10 +69,8 @@
                 stmt.setString(1, String.valueOf(c.getCode()));
                 stmt.setString(2, c.getName());
                 stmt.setString(3, c.getSurname());
-                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String currentTime;
-                currentTime = sdf.format(c.getBirthDate());
-                stmt.setString(4, String.valueOf(currentTime));
+
+                stmt.setString(4, String.valueOf(c.getBirthDate()));
                 stmt.setString(5, String.valueOf(c.getPostalCode()));
 
                 stmt.executeUpdate();
@@ -187,6 +185,7 @@
                 Statement stmt = (Statement) con.createStatement();
                 String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni;
                 ResultSet rs = stmt.executeQuery(sql);
+                rs.next();
                 Cliente j = extraerCliente(rs);
                 return j;
             } catch (SQLException e1) {
@@ -197,8 +196,9 @@
         public Article obtenerArticulo(String code) {
             try {
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "SELECT * " + "FROM Article" + " WHERE code=\"" + code;
+                String sql = "SELECT * " + "FROM Article" + " WHERE code=\"" + code + "\"";
                 ResultSet rs = stmt.executeQuery(sql);
+                rs.next();
                 Article j = extraerArticulo(rs);
                 return j;
             } catch (SQLException e1) {
@@ -210,7 +210,7 @@
             public Sale obtenerVenta(int code){
                 try {
                     Statement stmt = (Statement) con.createStatement();
-                    String sql = "SELECT * " + "FROM Sale" + " WHERE code=\"" + code;
+                    String sql = "SELECT * " + "FROM Saled" + " WHERE Sale_code=\"" + code;
                     ResultSet rs = stmt.executeQuery(sql);
                     Sale j = extraerVenta(rs);
                     return j;
@@ -226,6 +226,7 @@
                         "INSERT INTO Saled (Sale_code,Article_code)"
                                 + " VALUES ('" + code + "','"
                                 + e.getCode() + "')");
+                con.commit();
                 return true;
             } catch (SQLException e1) {
                 return false;
@@ -234,7 +235,7 @@
 
 
 
-        public static List<Cliente> obtenerListadoClientes() {
+        public  List<Cliente> obtenerListadoClientes() {
             try (ResultSet rs = con.prepareStatement(CONSULTA_LISTADO_CLIENTES).executeQuery()) {
                 List<Cliente> res = new ArrayList<>();
                 while (rs.next()) {
@@ -248,8 +249,36 @@
                 return null;
             }
         }
+        // El rs tiene todas las tuplas de la tabla Ventas_Articulos {
+        private Sale extraerVenta(ResultSet rs) throws SQLException {
+            ArrayList<Article> articulos = new ArrayList<Article>();
 
-        private static Cliente extraerCliente(ResultSet rs) throws SQLException {
+            String articulo = rs.getString("Sale_code");
+            int venta = rs.getInt("Article_code");
+            articulos.add(obtenerArticulo(articulo));
+            while(rs.next()){
+                articulo = rs.getString("Article_code");
+                articulos.add(obtenerArticulo(articulo));
+            }
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "SELECT * " + "FROM Sale" + " WHERE code=\"" + venta;
+                ResultSet rss = stmt.executeQuery(sql);
+                rss.next();
+                String date = rss.getString("date");
+                double cost = rss.getDouble("cost");
+                int Wdni = rss.getInt("Workers_dni");
+                int Cdni = rss.getInt("Clients_dni");
+                Sale s = new Sale(venta,Cdni,date,articulos,Wdni);
+                return s;
+            } catch (SQLException e1) {
+                return null;
+            }
+
+        }
+
+        private  Cliente extraerCliente(ResultSet rs) throws SQLException {
+
             int code = rs.getInt("dni");
             String name = rs.getString("name");
             String surname = rs.getString("surname");
@@ -260,16 +289,17 @@
             return c;
         }
 
-        private static Article extraerArticulo(ResultSet rs) throws SQLException {
-            String code = rs.getString("Code");
-            String date = rs.getString("date");
+        private  Article extraerArticulo(ResultSet rs) throws SQLException {
+
+            String code = rs.getString("code");
+            String name = rs.getString("name");
             int vat = rs.getInt("vat");
-            double prize = rs.getDouble("prize");
+            double price = rs.getDouble("price");
             String descripcion = rs.getString("description");
             int stock = rs.getInt("stock");
             String Category_name = rs.getString("Category_name");
 
-            Article c = new Article(code, date,Category_name, prize, vat, descripcion, stock);
+            Article c = new Article(code, name,Category_name, price, vat, descripcion, stock);
             return c;
         }
 
@@ -281,6 +311,7 @@
                         "INSERT INTO Workers (dni,Name)"
                                 + " VALUES ('" + a.getDni() + "','"
                                 + a.getName() + "')");
+                con.commit();
                 return true;
             } catch (SQLException e1) {
                 return false;

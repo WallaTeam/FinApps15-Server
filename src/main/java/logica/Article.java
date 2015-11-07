@@ -16,8 +16,21 @@ public class Article {
     private String description;
     private int stock;
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", prize=" + prize +
+                ", vat=" + vat +
+                ", description='" + description + '\'' +
+                ", stock=" + stock +
+                '}';
+    }
+
     public Article (String code, String name, String category, double prize, int vat, String description,
-    int stock){
+                    int stock){
         this.code = code;
         this.name = name;
         this.category = category;

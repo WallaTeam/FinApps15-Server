@@ -21,6 +21,17 @@ public class Cliente {
         this.postalCode = postalCode;
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "code=" + code +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", postalCode=" + postalCode +
+                '}';
+    }
+
     public int getCode() {
         return code;
     }
