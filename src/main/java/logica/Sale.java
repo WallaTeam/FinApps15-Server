@@ -25,7 +25,9 @@ public class Sale {
         this.finalPrice = finalPrice;
         this.worker = worker;
         for (Article at : articleList) {
-            finalPrice = at.getPrize();
+            double iva = at.getVat()/100;
+            iva= iva +1;
+            finalPrice = at.getPrize() * iva;
         }
     }
 
