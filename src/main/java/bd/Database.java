@@ -237,11 +237,9 @@
         public static List<Cliente> obtenerListadoClientes() {
             try (ResultSet rs = con.prepareStatement(CONSULTA_LISTADO_CLIENTES).executeQuery()) {
                 List<Cliente> res = new ArrayList<>();
-                if (rs.next()) {
-                    while (!rs.isAfterLast()) {
-                        Cliente c = extraerCliente(rs);
-                        res.add(c);
-                    }
+                while (rs.next()) {
+                    Cliente c = extraerCliente(rs);
+                    res.add(c);
                 }
                 return res;
             } catch (SQLException e) {
