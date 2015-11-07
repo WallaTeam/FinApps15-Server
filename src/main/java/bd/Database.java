@@ -24,8 +24,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "wallamsql";
+    static final String USER = "luis";
+    static final String PASS = "platano";
     static final String IP = "localhost";
     static final String DB = "finapps";
 
@@ -127,7 +127,7 @@ public class Database {
 
             stmt.executeUpdate();
             con.commit();
-            return false;
+            return true;
         } catch (SQLException e) {
             try {
                 System.out.print(e.getMessage());
@@ -171,25 +171,20 @@ public class Database {
         return "";
     }
 
-    public boolean modificarCliente(int dni, String name, String surname, String date, int postalCode) {
-        Statement stmt = null;
-        try {
-            stmt = (Statement) con.createStatement();
-        } catch (SQLException e) {
-            return false;
-        }
-
-        // (LOW PRIORITY) Actualizar cuando nadie este leyendo
-        String sql_1 = "UPDATE LOW PRIORITY " + "Clients"
-                + " SET dni =" + dni
-                + ", name =" + name + ", surname =" + surname
-                + ", date =" + date + ", postalCode=" + postalCode
-                + "WHERE dni=\""
-                + dni
-                + "\"";
+    public boolean actualizarCliente(int dni, String name, String surname, String date, int postalCode) {
 
         try {
-            stmt.executeQuery(sql_1);
+            Statement stmt = (Statement) con.createStatement();
+            // (LOW PRIORITY) Actualizar cuando nadie este leyendo
+            String sql1 = "UPDATE LOW PRIORITY " + "Clients"
+                    + " SET dni =" + dni
+                    + ", name =" + name + ", surname =" + surname
+                    + ", date =" + date + ", postalCode=" + postalCode
+                    + "WHERE dni=\""
+                    + dni
+                    + "\"";
+            stmt.executeUpdate(sql1);
+            con.commit();
             return true;
         } catch (SQLException e) {
             return false;
