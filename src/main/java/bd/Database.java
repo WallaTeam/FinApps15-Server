@@ -184,8 +184,10 @@ public class Database {
                     + dni
                     + "\"";
             stmt.executeUpdate(sql1);
+            con.commit();
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
