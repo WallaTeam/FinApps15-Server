@@ -45,7 +45,7 @@ public class SaleService {
         Gson gson = new Gson();
         Sale sale = gson.fromJson(cadena,Sale.class);
         boolean nuevo = database.insertarVenta(sale);
-        if (nuevo == true){
+        if (nuevo){
             return Response.status(Status.CREATED).build();
         } else {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();

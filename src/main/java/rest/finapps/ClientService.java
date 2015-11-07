@@ -46,7 +46,7 @@ public class ClientService {
         Gson gson = new Gson();
         Cliente cliente = gson.fromJson(cadena,Cliente.class);
         boolean nuevo = database.insertarCliente(cliente);
-        if (nuevo == true){
+        if (nuevo){
             return Response.status(Status.CREATED).build();
         } else {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -84,9 +84,10 @@ public class ClientService {
                                  @PathParam("id") int id, String cadena) {
         Gson gson = new Gson();
         Cliente client = gson.fromJson(cadena,Cliente.class);
-        boolean nuevo = database.modificarCliente(client.getCode(),client.getName(),
+        System.out.println(client.getSurname() + " " + client.getCode());
+        boolean nuevo = database.actualizarCliente(client.getCode(),client.getName(),
                 client.getSurname(), client.getBirthDate(),client.getPostalCode());
-        if (nuevo == true){
+        if (nuevo){
             return Response.ok(Status.ACCEPTED).build();
         } else {
             return Response.status(Status.BAD_REQUEST).build();
@@ -103,7 +104,7 @@ public class ClientService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateClient(@PathParam("id") int id) {
         boolean nuevo = database.borrarCliente(id);
-        if(nuevo == true){
+        if(nuevo){
             return Response.status(Status.OK).build();
         } else {
             return Response.status(Status.NOT_FOUND).build();
