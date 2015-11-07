@@ -313,7 +313,7 @@
                     Article c = extraerArticulo(rs);
                     res.add(c);
                 }
-                System.out.println("Listado salida RAUL MARIKA!!!");
+                System.out.println("Listado salida");
                 return res;
             } catch (SQLException e) {
                 e.printStackTrace();
