@@ -4,7 +4,7 @@ package rest.finapps;
 /**
  * Created by piraces on 6/11/15.
  */
-public class LedMatrix {
+public class LedMatrix{
     String command="led";
     Process p;
 
@@ -13,7 +13,6 @@ public class LedMatrix {
             p = Runtime.getRuntime().exec(command+" ok");
         }
         catch(Exception e){
-
         }
     }
 
@@ -22,7 +21,6 @@ public class LedMatrix {
             p = Runtime.getRuntime().exec(command+" fail");
         }
         catch(Exception e){
-
         }
     }
 }

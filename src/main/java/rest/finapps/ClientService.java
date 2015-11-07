@@ -37,7 +37,6 @@ public class ClientService {
     /**
      * A POST /contacts request should add a new entry to the address book.
      * @param info the URI information of the request
-     * @param person the posted entity
      * @return a JSON representation of the new entry that should be available at /contacts/person/{id}.
      */
     @POST
@@ -59,7 +58,7 @@ public class ClientService {
     @GET
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("id") int id) {
+    public Response getClient(@PathParam("id") int id) {
         Cliente nuevo = database.obtenerCliente(id);
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
@@ -71,14 +70,13 @@ public class ClientService {
     /**
      * A PUT /contacts/person/{id} should update a entry if exists
      * @param info the URI information of the request
-     * @param person the posted entity
      * @param id the unique identifier of a person
      * @return a JSON representation of the new updated entry or 400 if the id is not a key
      */
     @PUT
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePerson(@Context UriInfo info,
+    public Response updateClient(@Context UriInfo info,
                                  @PathParam("id") int id, Cliente client) {
         boolean nuevo = database.modificarArticulo(client);
         if (nuevo == true){
@@ -96,7 +94,7 @@ public class ClientService {
     @DELETE
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePerson(@PathParam("id") int id) {
+    public Response updateClient(@PathParam("id") int id) {
         boolean nuevo = database.eliminarCliente(id);
         if(nuevo == true){
             return Response.status(Status.OK).build();

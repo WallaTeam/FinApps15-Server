@@ -31,19 +31,20 @@ public class SaleService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Sale> getSales() {
-        return database.ventas();
+        //return database.ventas();
+        return null;
     }
 
     /**
      * A POST /contacts request should add a new entry to the address book.
      * @param info the URI information of the request
-     * @param person the posted entity
      * @return a JSON representation of the new entry that should be available at /contacts/person/{id}.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addClient(@Context UriInfo info, Sale sale) {
-        boolean nuevo = database.insertarVenta(sale);
+    public Response addSale(@Context UriInfo info, Sale sale) {
+        //boolean nuevo = database.insertarVenta(sale);
+        boolean nuevo = true;
         if (nuevo == true){
             return Response.status(Status.CREATED).build();
         } else {
@@ -59,8 +60,9 @@ public class SaleService {
     @GET
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("id") int id) {
-        Sale nuevo = database.obtenerVenta(id);
+    public Response getSale(@PathParam("id") int id) {
+        //Sale nuevo = database.obtenerVenta(id);
+        Sale nuevo = null;
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
         } else {
@@ -71,16 +73,16 @@ public class SaleService {
     /**
      * A PUT /contacts/person/{id} should update a entry if exists
      * @param info the URI information of the request
-     * @param person the posted entity
      * @param id the unique identifier of a person
      * @return a JSON representation of the new updated entry or 400 if the id is not a key
      */
     @PUT
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePerson(@Context UriInfo info,
+    public Response updateSale(@Context UriInfo info,
                                  @PathParam("id") int id, Sale sale) {
-        boolean nuevo = database.modificarVenta(sale);
+        //boolean nuevo = database.modificarVenta(sale);
+        boolean nuevo = true;
         if (nuevo == true){
             return Response.ok(Status.ACCEPTED).build();
         } else {
@@ -96,8 +98,9 @@ public class SaleService {
     @DELETE
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePerson(@PathParam("id") int id) {
-        boolean nuevo = database.eliminarVenta(id);
+    public Response updateSale(@PathParam("id") int id) {
+        //boolean nuevo = database.eliminarVenta(id);
+        boolean nuevo = true;
         if(nuevo == true){
             return Response.status(Status.OK).build();
         } else {

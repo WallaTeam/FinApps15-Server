@@ -23,6 +23,7 @@ public class ArticleService {
 	 */
 
 	Database database = new Database();
+	LedMatrix led = new LedMatrix();
 
 	/**
 	 * A GET /contacts request should return the address book in JSON.
@@ -31,20 +32,25 @@ public class ArticleService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Article> getArticles() {
-		return database.articulos();
+		//return database.articulos();
+		return null;
 	}
 
 	/**
 	 * A POST /contacts request should add a new entry to the address book.
 	 * @param info the URI information of the request
-	 * @param person the posted entity
 	 * @return a JSON representation of the new entry that should be available at /contacts/person/{id}.
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addArticle(@Context UriInfo info, Article article) {
-		database.insertarArticulo(article);
-		return Response.status(Status.CREATED).build();
+		//boolean nuevo = database.insertarArticulo(article);
+		boolean nuevo = true;
+		if (nuevo == true){
+			return Response.status(Status.CREATED).build();
+		} else {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	/**
@@ -55,8 +61,29 @@ public class ArticleService {
 	@GET
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPerson(@PathParam("id") int id) {
-		Article nuevo = database.obtenerArticulo(id);
+	public Response getArticle(@PathParam("id") int id) {
+		//Article nuevo = database.obtenerArticulo(id);
+		Article nuevo = null;
+		if (nuevo==null){
+			led.doFail();
+			return Response.status(Status.NOT_FOUND).build();
+		} else {
+			led.doOk();
+			return Response.ok(nuevo).build();
+		}
+	}
+
+	/**
+	 * A GET /contacts/person/{id} request should return a entry from the address book
+	 * @param id the unique identifier of a person
+	 * @return a JSON representation of the new entry or 404
+	 */
+	@GET
+	@Path("/product/detail/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getArticleDetail(@PathParam("id") int id) {
+		//Article nuevo = database.obtenerArticulo(id);
+		Article nuevo = null;
 		if (nuevo==null){
 			return Response.status(Status.NOT_FOUND).build();
 		} else {
@@ -67,16 +94,16 @@ public class ArticleService {
 	/**
 	 * A PUT /contacts/person/{id} should update a entry if exists
 	 * @param info the URI information of the request
-	 * @param person the posted entity
 	 * @param id the unique identifier of a person
 	 * @return a JSON representation of the new updated entry or 400 if the id is not a key
 	 */
 	@PUT
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePerson(@Context UriInfo info,
+	public Response updateArticle(@Context UriInfo info,
 								 @PathParam("id") int id, Article article) {
-		boolean nuevo = database.modificarArticulo(article);
+		//boolean nuevo = database.modificarArticulo(article);
+		boolean nuevo = true;
 		if (nuevo == true){
 			return Response.ok(Status.ACCEPTED).build();
 		} else {
@@ -92,8 +119,9 @@ public class ArticleService {
 	@DELETE
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePerson(@PathParam("id") int id) {
-		boolean nuevo = database.eliminarArticulo(id);
+	public Response updateArticle(@PathParam("id") int id) {
+		//boolean nuevo = database.eliminarArticulo(id);
+		boolean nuevo = true;
 		if(nuevo == true){
 			return Response.status(Status.OK).build();
 		} else {
