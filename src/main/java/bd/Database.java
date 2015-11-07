@@ -46,10 +46,8 @@ public class Database {
             String db_driver = JDBC_DRIVER + IP + ":" + 3306 + "/" + DB;
             con = (Connection) DriverManager.getConnection(db_driver, USER, PASS);
             con.setAutoCommit(false);
-            System.out.println("bien");
             return "00000";
         } catch (SQLException e) {
-            System.out.println("mal");
             return e.getSQLState();
         }
     }
@@ -130,10 +128,8 @@ public class Database {
             return true;
         } catch (SQLException e) {
             try {
-                System.out.print(e.getMessage());
                 con.rollback();
             } catch (SQLException e2) {
-                System.out.print("insercion cliente");
             }
             return false;
         }
@@ -294,7 +290,6 @@ public class Database {
                 Cliente c = extraerCliente(rs);
                 res.add(c);
             }
-            System.out.println("Listado salida");
             return res;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -309,7 +304,6 @@ public class Database {
                 Article c = extraerArticulo(rs);
                 res.add(c);
             }
-            System.out.println("Listado salida RAUL MARIKA!!!");
             return res;
         } catch (SQLException e) {
             e.printStackTrace();
