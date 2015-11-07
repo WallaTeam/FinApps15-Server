@@ -1,6 +1,7 @@
 package rest.finapps;
 
 import bd.Database;
+import com.google.gson.Gson;
 import logica.Article;
 
 import javax.ws.rs.*;
@@ -9,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 
 /**
  * Servicio que manipula personas en una lista de contactos.
@@ -31,9 +31,10 @@ public class ArticleService {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Article> getArticles() {
-		//return database.articulos();
-		return null;
+	public Response getArticles() {
+		Gson gson = new Gson();
+		return Response.ok(gson.toJson(database.obtenerArticulos())).build();
+
 	}
 
 	/**
@@ -44,8 +45,7 @@ public class ArticleService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addArticle(@Context UriInfo info, Article article) {
-		//boolean nuevo = database.insertarArticulo(article);
-		boolean nuevo = true;
+		boolean nuevo = database.insertarArticulo(article);
 		if (nuevo == true){
 			return Response.status(Status.CREATED).build();
 		} else {
@@ -62,14 +62,14 @@ public class ArticleService {
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArticle(@PathParam("id") int id) {
-		//Article nuevo = database.obtenerArticulo(id);
-		Article nuevo = null;
+		Article nuevo = database.obtenerArticulo(String.format("%d",id));
 		if (nuevo==null){
 			led.doFail();
 			return Response.status(Status.NOT_FOUND).build();
 		} else {
 			led.doOk();
-			return Response.ok(nuevo).build();
+			Gson gson = new Gson();
+			return Response.ok(gson.toJson(nuevo)).build();
 		}
 	}
 
@@ -82,12 +82,13 @@ public class ArticleService {
 	@Path("/product/detail/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArticleDetail(@PathParam("id") int id) {
-		//Article nuevo = database.obtenerArticulo(id);
-		Article nuevo = null;
+		String identificador = String.format("%d",id);
+		Article nuevo = database.obtenerArticulo(identificador);
 		if (nuevo==null){
 			return Response.status(Status.NOT_FOUND).build();
 		} else {
-			return Response.ok(nuevo).build();
+			Gson gson = new Gson();
+			return Response.ok(gson.toJson(nuevo)).build();
 		}
 	}
 
@@ -102,8 +103,7 @@ public class ArticleService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@Context UriInfo info,
 								 @PathParam("id") int id, Article article) {
-		//boolean nuevo = database.modificarArticulo(article);
-		boolean nuevo = true;
+		boolean nuevo = database.modificarArticulo(article);
 		if (nuevo == true){
 			return Response.ok(Status.ACCEPTED).build();
 		} else {
@@ -120,8 +120,7 @@ public class ArticleService {
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@PathParam("id") int id) {
-		//boolean nuevo = database.eliminarArticulo(id);
-		boolean nuevo = true;
+		boolean nuevo = database.eliminarArticulo(id);
 		if(nuevo == true){
 			return Response.status(Status.OK).build();
 		} else {

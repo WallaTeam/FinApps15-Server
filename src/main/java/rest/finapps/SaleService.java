@@ -1,6 +1,7 @@
 package rest.finapps;
 
 import bd.Database;
+import com.google.gson.Gson;
 import logica.Sale;
 
 import javax.ws.rs.*;
@@ -9,8 +10,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
-
 /**
  * Servicio que manipula personas en una lista de contactos.
  *
@@ -30,9 +29,9 @@ public class SaleService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Sale> getSales() {
-        //return database.ventas();
-        return null;
+    public Response getSales() {
+        Gson gson = new Gson();
+        return Response.ok(gson.toJson(database.obtenerListadoVentas())).build();
     }
 
     /**
@@ -43,8 +42,7 @@ public class SaleService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addSale(@Context UriInfo info, Sale sale) {
-        //boolean nuevo = database.insertarVenta(sale);
-        boolean nuevo = true;
+        boolean nuevo = database.insertarVenta(sale);
         if (nuevo == true){
             return Response.status(Status.CREATED).build();
         } else {
@@ -61,12 +59,12 @@ public class SaleService {
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSale(@PathParam("id") int id) {
-        //Sale nuevo = database.obtenerVenta(id);
-        Sale nuevo = null;
+        Sale nuevo = database.obtenerVenta(id);
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
         } else {
-            return Response.ok(nuevo).build();
+            Gson gson = new Gson();
+            return Response.ok(gson.toJson(nuevo)).build();
         }
     }
 
@@ -81,8 +79,7 @@ public class SaleService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSale(@Context UriInfo info,
                                  @PathParam("id") int id, Sale sale) {
-        //boolean nuevo = database.modificarVenta(sale);
-        boolean nuevo = true;
+        boolean nuevo = database.modificarVenta(sale);
         if (nuevo == true){
             return Response.ok(Status.ACCEPTED).build();
         } else {
@@ -99,8 +96,7 @@ public class SaleService {
     @Path("/sale/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSale(@PathParam("id") int id) {
-        //boolean nuevo = database.eliminarVenta(id);
-        boolean nuevo = true;
+        boolean nuevo = database.eliminarVenta(id);
         if(nuevo == true){
             return Response.status(Status.OK).build();
         } else {
