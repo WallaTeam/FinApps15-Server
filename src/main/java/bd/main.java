@@ -46,18 +46,29 @@ public class main {
         Worker worker2 = new Worker(2,"Jose");
         Sale venta1 = new Sale(1,1,"24/5/2003",articleList,1);
         Sale venta2 = new Sale(2,2,"24/5/2003",articleList2,2);
-        d.insertarArticulo(articulo);
+        /*d.insertarArticulo(articulo);
         d.insertarArticulo(articulo2);
         d.insertarArticulo(articulo3);
-        d.insertarArticulo(articulo4);
+        d.insertarArticulo(articulo4);*/
+        System.out.println(d.obtenerArticulo(articulo.getCode()));
+        System.out.println(d.obtenerArticulo(articulo2.getCode()));
+        System.out.println(d.obtenerArticulo(articulo3.getCode()));
+        System.out.println(d.obtenerArticulo(articulo4.getCode()));
         d.insertarCliente(cliente);
         d.insertarCliente(cliente1);
         d.insertarCliente(cliente3);
         d.insertarCliente(cliente2);
+        System.out.println(d.obtenerCliente(cliente.getCode()));
+        System.out.println(d.obtenerCliente(cliente.getCode()));
+        System.out.println(d.obtenerCliente(cliente.getCode()));
+        System.out.println(d.obtenerCliente(cliente.getCode()));
+
         d.insertarTrabajador(worker1);
         d.insertarTrabajador(worker2);
-        d.insertarVenta(venta1);
-        d.insertarVenta(venta2);
+        System.out.println(d.obtenerTrabajador(worker1.getDni()));
+        System.out.println(d.obtenerTrabajador(worker2.getDni()));
+        /*d.insertarVenta(venta1);
+        d.insertarVenta(venta2);*/
 
 
 

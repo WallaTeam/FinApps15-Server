@@ -24,8 +24,8 @@
         static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
         //  Database credentials
-        static final String USER = "root";
-        static final String PASS = "wallamsql";
+        static final String USER = "luis";
+        static final String PASS = "platano";
         static final String IP = "localhost";
         static final String DB = "finapps";
 
@@ -206,11 +206,40 @@
                return false;
            }
        }
+        public ArrayList<Sale> obtenerListadoVentas() {
+            ArrayList<Sale> ventas = new ArrayList<Sale>();
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "SELECT * " + "FROM Sale";
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Sale venta = obtenerVenta(rs.getInt("code"));
+                    ventas.add(venta);
+                }
+                return ventas;
+            } catch (SQLException e) {
+                return null;
+            }
+        }
+        public Worker obtenerTrabajador(int dni){
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "SELECT * " + "FROM Workers" + " WHERE dni=\"" + dni+"\"";
+                ResultSet rs = stmt.executeQuery(sql);
 
+                rs.next();
+                String name = rs.getString("Name");
+                Worker w = new Worker(dni,name);
+                return w;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
         public Cliente obtenerCliente(int dni) {
             try {
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni+ "\"";
+                String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni+"\"";
                 ResultSet rs = stmt.executeQuery(sql);
                 rs.next();
                 Cliente j = extraerCliente(rs);
@@ -233,11 +262,11 @@
             }
         }
 
-        /*
+
             public Sale obtenerVenta(int code){
                 try {
                     Statement stmt = (Statement) con.createStatement();
-                    String sql = "SELECT * " + "FROM Saled" + " WHERE Sale_code=\"" + code;
+                    String sql = "SELECT * " + "FROM Saled" + " WHERE Sale_code=\"" + code+"\"";
                     ResultSet rs = stmt.executeQuery(sql);
                     Sale j = extraerVenta(rs);
                     return j;
@@ -245,7 +274,7 @@
                     return null;
                 }
             }
-    */
+
         public boolean insertarVenta_Articulo(int code, Article e) {
             try {
                 Statement stmt = (Statement) con.createStatement();
