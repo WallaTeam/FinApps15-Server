@@ -183,7 +183,7 @@
         public Cliente obtenerCliente(int dni) {
             try {
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni;
+                String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni+ "\"";
                 ResultSet rs = stmt.executeQuery(sql);
                 rs.next();
                 Cliente j = extraerCliente(rs);
