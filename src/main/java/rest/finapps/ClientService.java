@@ -84,7 +84,7 @@ public class ClientService {
                                  @PathParam("id") int id, String cadena) {
         Gson gson = new Gson();
         Cliente client = gson.fromJson(cadena,Cliente.class);
-        boolean nuevo = database.modificarCliente(client.getCode(),client.getName(),
+        boolean nuevo = database.actualizarCliente(client.getCode(),client.getName(),
                 client.getSurname(), client.getBirthDate(),client.getPostalCode());
         if (nuevo == true){
             return Response.ok(Status.ACCEPTED).build();
