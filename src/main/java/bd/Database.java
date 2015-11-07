@@ -36,7 +36,7 @@ public class Database {
 
     private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
     private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
-    private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
+    private static final String INSERCION_VENTA ="insert into Sale(date, Clients_dni, Workers_dni,cost ) values ( ?, ?, ?, ?)";
     //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
     private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
     private static final String ACTUALIZACION_ARTICULO = "update Article set name = ?, vat = ?, price = ?, description = ? , stock = ?, Category_name = ? where code = ?";
@@ -138,11 +138,11 @@ public class Database {
 
     public boolean insertarVenta(Sale s) {
         try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_VENTA, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, s.getCode());
-            stmt.setString(2, s.getDate());
-            stmt.setInt(3, s.getClient());
-            stmt.setInt(4, s.getWorker());
-            stmt.setDouble(5, s.getFinalPrice());
+
+            stmt.setString(1, s.getDate());
+            stmt.setInt(2, s.getClient());
+            stmt.setInt(3, s.getWorker());
+            stmt.setDouble(4, s.getFinalPrice());
 
             stmt.executeUpdate();
 
