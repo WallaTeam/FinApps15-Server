@@ -7,7 +7,10 @@ import logica.Cliente;
 import logica.*;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by teruyi on 6/11/15.
@@ -32,7 +35,9 @@ public class Database {
 
     private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
     private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
-
+    private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni) values (?, ?, ?, ?)";
+    private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
+    private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
 
     public String connect() {
         try {
@@ -108,10 +113,35 @@ public class Database {
         }
     }
 
-    //
-    public String insertarVenta(Cliente c) {
-        return "";
-    }
+    /*
+    public String insertarVenta(Sale s) {
+        try (PreparedStatement stmt = con.prepareStatement(INSERCION_VENTA, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, s.getCode());
+            stmt.setDate(2, s.getDate());
+            stmt.setBoolean(3, s.getClient());
+            stmt.setBoolean(4, s.getWorker());
+            stmt.setBoolean(5, s.getFinalPrice());
+
+            stmt.executeUpdate();
+
+            for (Article at : s.getArticlelist()) {
+
+                insertarArticuloVenta(at);
+            }
+            con.commit();
+            v.numero_factura = obtenerNumeroFactura(v.albaran);
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.toString(), e);
+            try {
+                con.rollback();
+            } catch (SQLException e2) {
+                logger.log(Level.SEVERE, e2.toString(), e2);
+            }
+            res = e.getSQLState();
+        }
+        return res;
+    }*/
 
     //
     public String insertarDevolucion(Cliente c) {
@@ -152,5 +182,31 @@ public class Database {
            return false;
        }
    }
+
+    public static List<Cliente> obtenerListadoClientes() {
+        try (ResultSet rs = con.prepareStatement(CONSULTA_LISTADO_CLIENTES).executeQuery()) {
+            List<Cliente> res = new ArrayList<>();
+            if (rs.next()) {
+                while (!rs.isAfterLast()) {
+                    Cliente c = extraerCliente(rs);
+                    res.add(c);
+                }
+            }
+            return res;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    private static Cliente extraerCliente(ResultSet rs) throws SQLException {
+        int code = rs.getInt("dni");
+        String name = rs.getString("name");
+        String surname = rs.getString("surname");
+        String birthDate = rs.getString("date");
+        int direccion = rs.getInt("postalCode");
+
+        Cliente c = new Cliente(code, name, surname, birthDate, direccion);
+        return c;
+    }
 
 }

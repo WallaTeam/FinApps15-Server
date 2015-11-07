@@ -10,10 +10,10 @@ public class Cliente {
     private int code;
     private String name;
     private String surname;
-    private Date birthDate;
+    private String birthDate;
     private int postalCode;
 
-    public Cliente(int code, String name, String surname, Date birthDate, int postalCode) {
+    public Cliente(int code, String name, String surname, String birthDate, int postalCode) {
         this.code = code;
         this.name = name;
         this.surname = surname;
@@ -45,11 +45,11 @@ public class Cliente {
         this.surname = surname;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

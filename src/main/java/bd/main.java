@@ -1,7 +1,6 @@
 package bd;
 
-import logica.Article;
-import logica.Cliente;
+import logica.*;
 
 import java.util.Date;
 
