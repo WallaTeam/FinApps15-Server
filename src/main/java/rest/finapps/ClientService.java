@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Servicio que manipula personas en una lista de contactos.
@@ -30,8 +30,8 @@ public class ClientService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Cliente> getClientes() {
-        return database.clientes();
+    public List<Cliente> getClientes() {
+        return database.obtenerListadoClientes();
     }
 
     /**
@@ -59,7 +59,7 @@ public class ClientService {
     @Path("/client/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getClient(@PathParam("id") int id) {
-        Cliente nuevo = database.obtenerCliente(id);
+        Cliente nuevo = database.e(id);
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
         } else {
