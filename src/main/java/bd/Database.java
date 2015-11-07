@@ -159,7 +159,7 @@ public class Database {
 
             rss.next();
             int code = rss.getInt(1);
-            code ++;
+            //code ++;
 
 
             for (Article at : s.getArticlelist()) {
