@@ -39,6 +39,7 @@
     private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
     //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
     private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
+    private static final String ACTUALIZACION_ARTICULO = "update articulo set name = ?, vat = ?, price = ?, description = ? , stock = ? Category_name = ? where code = ?";
 
         public String connect() {
             try {
@@ -86,6 +87,32 @@
                 return false;
             }
         }
+
+        public Boolean actualizarArticulo (Article a) {
+            try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(ACTUALIZACION_ARTICULO, Statement.RETURN_GENERATED_KEYS)) {
+
+                stmt.setString(1, a.getName());
+                stmt.setInt(2, a.getVat());
+                stmt.setDouble(3, a.getPrize());
+                stmt.setString(4, String.valueOf(a.getDescription()));
+                stmt.setInt(5, a.getStock());
+                stmt.setString(6, String.valueOf(a.getCategory()));
+                stmt.setString(7, String.valueOf(a.getCode()));
+
+                stmt.executeUpdate();
+                con.commit();
+                return true;
+            } catch (SQLException e) {
+                try {
+                    con.rollback();
+                    return false;
+                } catch (SQLException e2) {
+
+                }
+                return false;
+            }
+        }
+
         //
         public Boolean insertarArticulo(Article a) {
             try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_ARTICLE, Statement.RETURN_GENERATED_KEYS)) {
