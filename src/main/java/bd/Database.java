@@ -33,11 +33,11 @@
         }
 
 
-    private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
-    private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
-    private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
-    //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
-    private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
+        private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
+        private static final String INSERCION_ARTICLE = "insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
+        private static final String INSERCION_VENTA = "insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
+        //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
+        private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
 
         public String connect() {
             try {
@@ -126,19 +126,19 @@
 
                 for (Article at : s.getArticlelist()) {
 
-                insertarVenta_Articulo(s.getCode(), at);
-            }
-            con.commit();
+                    insertarVenta_Articulo(s.getCode(), at);
+                }
+                con.commit();
 
-        } catch (SQLException e) {
-            try {
-                con.rollback();
-            } catch (SQLException e2) {
+            } catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException e2) {
+                }
+                return false;
             }
-            return false;
+            return true;
         }
-        return true;
-    }
 
         //
         public String insertarDevolucion(Cliente c) {
@@ -148,7 +148,7 @@
         public boolean modificarCliente(int dni, String name, String surname, String date, int postalCode) {
             Statement stmt = null;
             try {
-                stmt = (Statement)con.createStatement();
+                stmt = (Statement) con.createStatement();
             } catch (SQLException e) {
                 return false;
             }
@@ -181,29 +181,31 @@
            }
        }
 
-            public Cliente obtenerCliente(int dni) {
-                try {
-                    Statement stmt = (Statement) con.createStatement();
-                    String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni;
-                    ResultSet rs = stmt.executeQuery(sql);
-                    Cliente j = extraerCliente(rs);
-                    return j;
-                } catch (SQLException e1) {
-                    return null;
-                }
+        public Cliente obtenerCliente(int dni) {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "SELECT * " + "FROM Clients" + " WHERE dni=\"" + dni;
+                ResultSet rs = stmt.executeQuery(sql);
+                Cliente j = extraerCliente(rs);
+                return j;
+            } catch (SQLException e1) {
+                return null;
             }
+        }
+
+        public Article obtenerArticulo(String code) {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "SELECT * " + "FROM Article" + " WHERE code=\"" + code;
+                ResultSet rs = stmt.executeQuery(sql);
+                Article j = extraerArticulo(rs);
+                return j;
+            } catch (SQLException e1) {
+                return null;
+            }
+        }
+
         /*
-            public Article obtenerArticulo(String code){
-                try {
-                    Statement stmt = (Statement) con.createStatement();
-                    String sql = "SELECT * " + "FROM Article" + " WHERE code=\"" + code;
-                    ResultSet rs = stmt.executeQuery(sql);
-                    Cliente j = extraerCliente(rs);
-                    return j;
-                } catch (SQLException e1) {
-                    return null;
-                }
-            }
             public Sale obtenerVenta(int code){
                 try {
                     Statement stmt = (Statement) con.createStatement();
@@ -216,18 +218,20 @@
                 }
             }
     */
-           public boolean insertarVenta_Articulo(int code, Article e){
-        try {
-                    Statement stmt = (Statement) con.createStatement();
-                    stmt.executeUpdate(
-                            "INSERT INTO Saled (Sale_code,Article_code)"
-                                    + " VALUES ('" + code + "','"
-                                    + e.getCode() + "')");
-                    return true;
-                } catch (SQLException e1) {
-                    return false;
-                }
+        public boolean insertarVenta_Articulo(int code, Article e) {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                stmt.executeUpdate(
+                        "INSERT INTO Saled (Sale_code,Article_code)"
+                                + " VALUES ('" + code + "','"
+                                + e.getCode() + "')");
+                return true;
+            } catch (SQLException e1) {
+                return false;
+            }
         }
+
+
 
         public static List<Cliente> obtenerListadoClientes() {
             try (ResultSet rs = con.prepareStatement(CONSULTA_LISTADO_CLIENTES).executeQuery()) {
@@ -254,6 +258,20 @@
             Cliente c = new Cliente(code, name, surname, birthDate, direccion);
             return c;
         }
+
+        private static Article extraerArticulo(ResultSet rs) throws SQLException {
+            String code = rs.getString("Code");
+            String date = rs.getString("date");
+            int vat = rs.getInt("vat");
+            double prize = rs.getDouble("prize");
+            String descripcion = rs.getString("description");
+            int stock = rs.getInt("stock");
+            String Category_name = rs.getString("Category_name");
+
+            Article c = new Article(code, date,Category_name, prize, vat, descripcion, stock);
+            return c;
+        }
+
         public boolean insertarTrabajador(Worker a){
 
             try {
