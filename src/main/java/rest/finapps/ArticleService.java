@@ -46,7 +46,6 @@ public class ArticleService {
 	public Response addArticle(@Context UriInfo info, String cadena) {
 		Gson gson = new Gson();
 		Article article = gson.fromJson(cadena,Article.class);
-		System.out.println(article.getCode());
 		boolean nuevo = database.insertarArticulo(article);
 		if (nuevo){
 			return Response.status(Status.CREATED).build();
@@ -63,8 +62,8 @@ public class ArticleService {
 	@GET
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArticle(@PathParam("id") int id) {
-		Article nuevo = database.obtenerArticulo(String.format("%d",id));
+	public Response getArticle(@PathParam("id") String id) {
+		Article nuevo = database.obtenerArticulo(id);
 		if (nuevo==null){
 			led.doFail();
 			return Response.status(Status.NOT_FOUND).build();
@@ -83,9 +82,8 @@ public class ArticleService {
 	@GET
 	@Path("/product/detail/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArticleDetail(@PathParam("id") int id) {
-		String identificador = String.format("%d",id);
-		Article nuevo = database.obtenerArticulo(identificador);
+	public Response getArticleDetail(@PathParam("id") String id) {
+		Article nuevo = database.obtenerArticulo(id);
 		if (nuevo==null){
 			return Response.status(Status.NOT_FOUND).build();
 		} else {
@@ -104,7 +102,7 @@ public class ArticleService {
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@Context UriInfo info,
-								 @PathParam("id") int id, String cadena) {
+								 @PathParam("id") String id, String cadena) {
 		Gson gson = new Gson();
 		Article article = gson.fromJson(cadena,Article.class);
 		boolean nuevo = database.actualizarArticulo(article);
@@ -123,7 +121,7 @@ public class ArticleService {
 	@DELETE
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateArticle(@PathParam("id") int id) {
+	public Response updateArticle(@PathParam("id") String id) {
 		return Response.status(Status.NOT_FOUND).build();
 	}
 
