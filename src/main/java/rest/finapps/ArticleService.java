@@ -46,6 +46,7 @@ public class ArticleService {
 	public Response addArticle(@Context UriInfo info, String cadena) {
 		Gson gson = new Gson();
 		Article article = gson.fromJson(cadena,Article.class);
+		System.out.println(article.getCode());
 		boolean nuevo = database.insertarArticulo(article);
 		if (nuevo == true){
 			return Response.status(Status.CREATED).build();
