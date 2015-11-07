@@ -33,11 +33,11 @@
         }
 
 
-        private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
-        private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
-        private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni) values (?, ?, ?, ?)";
-        private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
-        private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
+    private static final String INSERCION_CLIENTE = "insert into Clients(dni, name, surname, date, postalCode) values (?, ?, ?, ?, ?)";
+    private static final String INSERCION_ARTICLE ="insert into Article(code, name, vat, price, description, stock, Category_name) values (?, ?, ?, ?, ?,?,?)";
+    private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
+    //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
+    private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
 
         public String connect() {
             try {
@@ -113,35 +113,32 @@
             }
         }
 
-        /*
-        public String insertarVenta(Sale s) {
-            try (PreparedStatement stmt = con.prepareStatement(INSERCION_VENTA, Statement.RETURN_GENERATED_KEYS)) {
-                stmt.setInt(1, s.getCode());
-                stmt.setDate(2, s.getDate());
-                stmt.setBoolean(3, s.getClient());
-                stmt.setBoolean(4, s.getWorker());
-                stmt.setBoolean(5, s.getFinalPrice());
+
+    public boolean insertarVenta(Sale s) {
+        try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_VENTA, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, s.getCode());
+            stmt.setString(2, s.getDate());
+            stmt.setInt(3, s.getClient());
+            stmt.setInt(4, s.getWorker());
+            stmt.setDouble(5, s.getFinalPrice());
 
                 stmt.executeUpdate();
 
                 for (Article at : s.getArticlelist()) {
 
-                    insertarArticuloVenta(at);
-                }
-                con.commit();
-                v.numero_factura = obtenerNumeroFactura(v.albaran);
-
-            } catch (SQLException e) {
-                logger.log(Level.SEVERE, e.toString(), e);
-                try {
-                    con.rollback();
-                } catch (SQLException e2) {
-                    logger.log(Level.SEVERE, e2.toString(), e2);
-                }
-                res = e.getSQLState();
+                insertarVenta_Articulo(s.getCode(), at);
             }
-            return res;
-        }*/
+            con.commit();
+
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException e2) {
+            }
+            return false;
+        }
+        return true;
+    }
 
         //
         public String insertarDevolucion(Cliente c) {
@@ -183,7 +180,7 @@
                return false;
            }
        }
-    /*
+
             public Cliente obtenerCliente(String dni) {
                 try {
                     Statement stmt = (Statement) con.createStatement();
@@ -195,6 +192,7 @@
                     return null;
                 }
             }
+        /*
             public Article obtenerArticulo(String code){
                 try {
                     Statement stmt = (Statement) con.createStatement();
@@ -218,12 +216,12 @@
                 }
             }
     */
-           public boolean insertarVenta_Articulo(Sale a, Article e){
+           public boolean insertarVenta_Articulo(int code, Article e){
         try {
                     Statement stmt = (Statement) con.createStatement();
                     stmt.executeUpdate(
                             "INSERT INTO Saled (Sale_code,Article_code)"
-                                    + " VALUES ('" + a.getCode() + "','"
+                                    + " VALUES ('" + code + "','"
                                     + e.getCode() + "')");
                     return true;
                 } catch (SQLException e1) {
