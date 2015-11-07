@@ -150,9 +150,7 @@ public class Database {
                             + s.getFinalPrice()
                             + ")");
 
-            System.out.println("Antes del comit");
             con.commit();
-            System.out.println("Despues del comit");
             Statement stmtt = (Statement) con.createStatement();
             String sql = "Select MAX(code) from Sale";
             ResultSet rss = stmt.executeQuery(sql);
@@ -166,9 +164,7 @@ public class Database {
 
                 insertarVenta_Articulo(code, at);
             }
-            System.out.println("Antes del comit2");
             con.commit();
-            System.out.println("Despues del comit2");
         } catch (SQLException e) {
             e.printStackTrace();
             try {
