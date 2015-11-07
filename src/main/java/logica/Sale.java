@@ -39,7 +39,7 @@ public class Sale {
                 ", articleList=" + articleList +
                 ", finalPrice=" + finalPrice +
                 ", worker=" + worker +
-                '}';
+                '}' +"\n";
     }
 
     public int getCode (){
