@@ -22,7 +22,7 @@ public class Server {
 		AddressBook ab = new AddressBook();
 		
 		//Launch server
-		URI uri = UriBuilder.fromUri("http://localhost/").port(8080).build();
+		URI uri = UriBuilder.fromUri("http://192.168.42.1/").port(8080).build();
 		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri,
 				new ApplicationConfig());
 		try (Scanner scan = new Scanner(System.in)){
