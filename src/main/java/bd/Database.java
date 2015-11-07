@@ -30,6 +30,7 @@
         static final String DB = "finapps";
 
         public Database() {
+            this.connect();
         }
 
 
@@ -244,6 +245,7 @@
                 }
                 return res;
             } catch (SQLException e) {
+                e.printStackTrace();
                 return null;
             }
         }
