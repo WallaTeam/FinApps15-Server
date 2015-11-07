@@ -204,9 +204,11 @@ public class Database {
             String sql = "SELECT * " + "FROM Sale";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
+                System.out.println("Hola");
                 Sale venta = obtenerVenta(rs.getInt("code"));
                 ventas.add(venta);
             }
+            System.out.println(ventas);
             return ventas;
         } catch (SQLException e) {
             return null;
