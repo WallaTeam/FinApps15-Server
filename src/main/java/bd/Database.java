@@ -25,8 +25,8 @@
 
         //  Database credentials
         static final String USER = "root";
-        static final String PASS = "wallapet";
-        static final String IP = "192.168.56.101";
+        static final String PASS = "wallamsql";
+        static final String IP = "192.168.42.1";
         static final String DB = "finapps";
 
         public Database() {
