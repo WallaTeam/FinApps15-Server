@@ -39,7 +39,7 @@ public class Database {
     private static final String INSERCION_VENTA ="insert into Sale(code, date, Clients_dni, Workers_dni,cost ) values (?, ?, ?, ?, ?)";
     //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
     private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
-    private static final String ACTUALIZACION_ARTICULO = "update articulo set name = ?, vat = ?, price = ?, description = ? , stock = ? Category_name = ? where code = ?";
+    private static final String ACTUALIZACION_ARTICULO = "update articulo set name = ?, vat = ?, price = ?, description = ? , stock = ?, Category_name = ? where code = ?";
     private static final String CONSULTA_LISTADO_ARTICULOS ="select * from Article";
     public String connect() {
         try {
@@ -176,11 +176,11 @@ public class Database {
         try {
             Statement stmt = (Statement) con.createStatement();
             // (LOW PRIORITY) Actualizar cuando nadie este leyendo
-            String sql1 = "UPDATE LOW PRIORITY " + "Clients"
-                    + " SET dni =" + dni
-                    + ", name =" + name + ", surname =" + surname
-                    + ", date =" + date + ", postalCode=" + postalCode
-                    + "WHERE dni=\""
+            String sql1 = "UPDATE " + "Clients"
+                    + " SET dni="+"\"" + dni + "\""
+                    + ", name="+"\""  + name +"\""+ ", surname=" +"\"" + surname+"\""
+                    + ", date=" +"\"" + date +"\""+ ", postalCode=" +"\"" + postalCode+"\""
+                    + " WHERE dni=\""
                     + dni
                     + "\"";
             stmt.executeUpdate(sql1);

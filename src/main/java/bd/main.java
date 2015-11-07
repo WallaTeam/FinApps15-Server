@@ -70,13 +70,12 @@ public class main {
         System.out.println(d.obtenerTrabajador(worker2.getDni()));
 
         d.insertarVenta(venta1);*/
-        d.insertarVenta(venta2);
+       // d.insertarVenta(venta2);
         //System.out.println(d.obtenerVenta(venta1.getCode()));
-        System.out.println(d.obtenerListadoVentas());
+      //  System.out.println(d.obtenerListadoVentas());
 
-
-
-
+        d.actualizarCliente(cliente1.getCode(),"MAMAtu","JAJAJA","999999999",123);
+        System.out.println(d.obtenerCliente(cliente1.getCode()));
 
     }
 }
