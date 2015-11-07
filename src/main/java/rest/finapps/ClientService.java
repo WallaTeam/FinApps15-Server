@@ -1,6 +1,7 @@
 package rest.finapps;
 
 import bd.Database;
+import com.google.gson.Gson;
 import logica.Cliente;
 
 import javax.ws.rs.*;
@@ -30,7 +31,8 @@ public class ClientService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getClientes() {
-        return "parguelas";
+        Gson gson = new Gson();
+        return gson.toJson(database.obtenerListadoClientes());
     }
 
     /**
