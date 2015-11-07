@@ -42,8 +42,10 @@ public class ClientService {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addClient(@Context UriInfo info, Cliente client) {
-        boolean nuevo = database.insertarCliente(client);
+    public Response addClient(@Context UriInfo info, String cadena) {
+        Gson gson = new Gson();
+        Cliente cliente = gson.fromJson(cadena,Cliente.class);
+        boolean nuevo = database.insertarCliente(cliente);
         if (nuevo == true){
             return Response.status(Status.CREATED).build();
         } else {
