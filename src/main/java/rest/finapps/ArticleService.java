@@ -33,8 +33,8 @@ public class ArticleService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArticles() {
 		Gson gson = new Gson();
-		return Response.ok(gson.toJson(database.obtenerArticulos())).build();
-
+		//return Response.ok(gson.toJson(database.obtenerArticulos())).build();
+		return Response.status(Status.ACCEPTED).build();
 	}
 
 	/**
@@ -103,7 +103,8 @@ public class ArticleService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@Context UriInfo info,
 								 @PathParam("id") int id, Article article) {
-		boolean nuevo = database.modificarArticulo(article);
+		//boolean nuevo = database.modificarArticulo(article);
+		boolean nuevo = true;
 		if (nuevo == true){
 			return Response.ok(Status.ACCEPTED).build();
 		} else {
@@ -120,7 +121,8 @@ public class ArticleService {
 	@Path("/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateArticle(@PathParam("id") int id) {
-		boolean nuevo = database.eliminarArticulo(id);
+		//boolean nuevo = database.eliminarArticulo(id);
+		boolean nuevo = true;
 		if(nuevo == true){
 			return Response.status(Status.OK).build();
 		} else {
