@@ -48,7 +48,7 @@ public class ArticleService {
 		Article article = gson.fromJson(cadena,Article.class);
 		System.out.println(article.getCode());
 		boolean nuevo = database.insertarArticulo(article);
-		if (nuevo == true){
+		if (nuevo){
 			return Response.status(Status.CREATED).build();
 		} else {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -108,7 +108,7 @@ public class ArticleService {
 		Gson gson = new Gson();
 		Article article = gson.fromJson(cadena,Article.class);
 		boolean nuevo = database.actualizarArticulo(article);
-		if (nuevo == true){
+		if (nuevo){
 			return Response.ok(Status.ACCEPTED).build();
 		} else {
 			return Response.status(Status.BAD_REQUEST).build();
