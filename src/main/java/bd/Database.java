@@ -24,8 +24,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "wallamsql";
+    static final String USER = "luis";
+    static final String PASS = "platano";
     static final String IP = "localhost";
     static final String DB = "finapps";
 
@@ -309,7 +309,7 @@ public class Database {
                 Article c = extraerArticulo(rs);
                 res.add(c);
             }
-            System.out.println("Listado salida");
+            System.out.println("Listado salida RAUL MARIKA!!!");
             return res;
         } catch (SQLException e) {
             e.printStackTrace();
