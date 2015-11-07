@@ -30,9 +30,9 @@ public class ClientService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getClientes() {
+    public Response getClientes() {
         Gson gson = new Gson();
-        return gson.toJson(database.obtenerListadoClientes());
+        return Response.ok(gson.toJson(database.obtenerListadoClientes())).build();
     }
 
     /**
