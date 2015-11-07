@@ -136,19 +136,29 @@ public class Database {
 
 
     public boolean insertarVenta(Sale s) {
-        try (PreparedStatement stmt = (PreparedStatement) con.prepareStatement(INSERCION_VENTA, Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            Statement stmt = (Statement) con.createStatement();
+           // stmt.executeUpdate(
+              //      "INSERT INTO Saled (Sale_code,Article_code)"
+                //            + " VALUES ('" + code + "','"
+                 //           + e.getCode() + "')");
+            stmt.executeUpdate(
+                    "INSERT INTO Sale (date,Clients_dni,Workers_dni,cost)"
+                            + " VALUES (\"" +  s.getDate() + "\","
+                            +  s.getClient() + ","
+                            +  s.getWorker()  + ","
+                            + s.getFinalPrice()
+                            + ")");
 
-            stmt.setString(1, s.getDate());
-            stmt.setInt(2, s.getClient());
-            stmt.setInt(3, s.getWorker());
-            stmt.setDouble(4, s.getFinalPrice());
+            con.commit();
             Statement stmtt = (Statement) con.createStatement();
             String sql = "Select MAX(code) from Sale";
             ResultSet rss = stmt.executeQuery(sql);
+
             rss.next();
             int code = rss.getInt(1);
             code ++;
-            stmt.executeUpdate();
+
 
             for (Article at : s.getArticlelist()) {
 
@@ -276,8 +286,8 @@ public class Database {
             Statement stmt = (Statement) con.createStatement();
             stmt.executeUpdate(
                     "INSERT INTO Saled (Sale_code,Article_code)"
-                            + " VALUES ('" + code + "','"
-                            + e.getCode() + "')");
+                            + " VALUES (" + code + ","
+                            + e.getCode() + ")");
             con.commit();
             return true;
         } catch (SQLException e1) {
