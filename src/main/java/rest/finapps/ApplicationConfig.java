@@ -18,6 +18,8 @@ public class ApplicationConfig extends ResourceConfig {
      */
     public ApplicationConfig() {
     	register(ArticleService.class);
+		register(ClientService.class);
+		register(SaleService.class);
     	register(MOXyJsonProvider.class);
 
 	}	
