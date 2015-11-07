@@ -24,8 +24,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "wallamsql";
+    static final String USER = "luis";
+    static final String PASS = "platano";
     static final String IP = "localhost";
     static final String DB = "finapps";
 
@@ -146,7 +146,8 @@ public class Database {
             String sql = "Select MAX(code) from Sale";
             ResultSet rss = stmt.executeQuery(sql);
             rss.next();
-            int code = rss.getInt("code");
+            int code = rss.getInt(1);
+            code ++;
             stmt.executeUpdate();
 
             for (Article at : s.getArticlelist()) {
@@ -333,14 +334,13 @@ public class Database {
             double cost = rss.getDouble("cost");
             int Wdni = rss.getInt("Workers_dni");
             int Cdni = rss.getInt("Clients_dni");
-            Sale s = new Sale(venta,Cdni,date,articulos,Wdni);
+            Sale s = new Sale(Cdni,date,articulos,Wdni);
+            s.setCode(venta);
             return s;
         } catch (SQLException e1) {
             return null;
         }
-
     }
-
     private  Cliente extraerCliente(ResultSet rs) throws SQLException {
 
         int code = rs.getInt("dni");

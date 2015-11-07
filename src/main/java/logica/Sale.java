@@ -17,8 +17,7 @@ public class Sale {
 
 
 
-    public Sale (int code , int client, String date, ArrayList<Article> articleList, int worker){
-        this.code = code;
+    public Sale ( int client, String date, ArrayList<Article> articleList, int worker){
         this.client = client;
         this.date = date;
         finalPrice = 0;
