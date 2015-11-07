@@ -31,7 +31,6 @@ public class ClientService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Cliente> getClientes() {
-
         return database.obtenerListadoClientes();
     }
 

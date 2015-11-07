@@ -241,6 +241,7 @@
                     Cliente c = extraerCliente(rs);
                     res.add(c);
                 }
+                System.out.println("Listado salida");
                 return res;
             } catch (SQLException e) {
                 e.printStackTrace();
