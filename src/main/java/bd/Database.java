@@ -187,7 +187,6 @@ public class Database {
             con.commit();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }

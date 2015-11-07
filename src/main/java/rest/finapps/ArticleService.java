@@ -107,7 +107,7 @@ public class ArticleService {
 		Article article = gson.fromJson(cadena,Article.class);
 		boolean nuevo = database.actualizarArticulo(article);
 		if (nuevo){
-			return Response.ok(Status.ACCEPTED).build();
+			return Response.status(Status.ACCEPTED).build();
 		} else {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
