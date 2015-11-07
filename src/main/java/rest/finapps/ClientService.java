@@ -64,7 +64,8 @@ public class ClientService {
         if (nuevo==null){
             return Response.status(Status.NOT_FOUND).build();
         } else {
-            return Response.ok(nuevo).build();
+            Gson gson = new Gson();
+            return Response.ok(gson.toJson(nuevo)).build();
         }
     }
 
