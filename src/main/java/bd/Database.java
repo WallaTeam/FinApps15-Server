@@ -235,14 +235,10 @@
 
 
         public static List<Cliente> obtenerListadoClientes() {
-            System.out.println("Dentro ejecutando query");
             try (ResultSet rs = con.prepareStatement(CONSULTA_LISTADO_CLIENTES).executeQuery()) {
-                System.out.println("Dentro ejecutada query");
                 List<Cliente> res = new ArrayList<>();
                 if (rs.next()) {
-                    System.out.println("Antes bucle");
                     while (!rs.isAfterLast()) {
-                        System.out.println("Bucle");
                         Cliente c = extraerCliente(rs);
                         res.add(c);
                     }
