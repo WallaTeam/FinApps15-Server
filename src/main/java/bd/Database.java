@@ -40,7 +40,7 @@
     //private static final String INSERCION__ARTICULO_VENTA ="insert into Saled(Sale_code, Article_code) values (?, ?)";
     private static final String CONSULTA_LISTADO_CLIENTES = "select * from Clients";
     private static final String ACTUALIZACION_ARTICULO = "update articulo set name = ?, vat = ?, price = ?, description = ? , stock = ? Category_name = ? where code = ?";
-
+    private static final String CONSULTA_LISTADO_ARTICULOS ="select * from Article";
         public String connect() {
             try {
                 String db_driver = JDBC_DRIVER + IP + ":" + 3306 + "/" + DB;
@@ -270,6 +270,21 @@
                     res.add(c);
                 }
                 System.out.println("Listado salida");
+                return res;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        public  List<Article> obtenerListadoArticulos() {
+            try (ResultSet rs = con.prepareStatement(CONSULTA_LISTADO_ARTICULOS).executeQuery()) {
+                List<Article> res = new ArrayList<>();
+                while (rs.next()) {
+                    Article c = extraerArticulo(rs);
+                    res.add(c);
+                }
+                System.out.println("Listado salida RAUL MARIKA!!!");
                 return res;
             } catch (SQLException e) {
                 e.printStackTrace();
